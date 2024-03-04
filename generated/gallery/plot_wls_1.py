@@ -2,11 +2,15 @@
 
 """
 
+#%%
+# First, the required dependencies are imported:
 from autonav import wls
 from autonav.file_handlers import readpathfile
 from autonav.plots import plot_trajectories
 from numpy import array
 
+#%%
+# The next step is to define the simulation parameters:
 b = 200
 n = 8
 a_i = array(
@@ -22,8 +26,14 @@ a_i = array(
     ).T
 k = 50
 sigma = 1
+v_max = b / 100
+tau = b / 50
+gamma = b / 100
 initial_uav_position = [10, 10, 5]
 destinations = readpathfile("Path.csv")
 
-[estimated_trajectory, true_trajectory] = wls(a_i, n, k, sigma, destinations, initial_uav_position)
-plot_trajectories(destinations, [estimated_trajectory], a_i, ['WLS'])
+#%%
+# Finally, one can invoke the [`wls`] and function and plot the estimated trajectory:
+
+[estimated_trajectory, true_trajectory] = wls(a_i, n, k, sigma, destinations, initial_uav_position, v_max, tau, gamma)
+plt_obj = plot_trajectories(destinations, [estimated_trajectory], a_i, ['WLS'])
